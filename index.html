@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Hello World!</title>
+
+    <style type="text/css">
+
+    #txtEdit
+    {
+      width:80vw;
+      height:10em;
+    }
+    </style>
+
+  </head>
+  <body>
+    <div>
+    <h1>Hello World!</h1>
+    We are using node <script>document.write(process.versions.node)</script>,
+    Chrome <script>document.write(process.versions.chrome)</script>,
+    and Electron <script>document.write(process.versions.electron)</script>.
+    </div>
+
+    <button type="button" id="btnFire">メッセージ送信</button>
+    <div>
+    <textarea id="txtEdit" /></textarea>
+    </div>
+
+    <div>
+        <button type="button" id="btnRender">レンダラープロセス</button>
+    </div>
+    <div>
+      <button type="button" id="btnMain">メインプロセス</button>
+    </div>
+      
+
+
+    <script>
+      window.$ = window.jQuery = require('jquery');
+    
+    
+      $(function () {
+
+      const fs = require('fs');
+      const msg = fs.readFileSync("README.md", {encoding: "utf-8"});
+      $("#txtEdit").text(msg);
+
+      fs.readFile('README.md', 'utf-8', (err, data) => {
+        if (err) { throw err; }
+        //txtEdit.innerText = data;
+        //document.getElementById("txtEdit").innerText = data;
+      });
+
+      // レンダラプロセス（送信側）
+      const {ipcRenderer} = require('electron') // ipc通信を読み込む
+      $("#btnFire").on("click", function(){
+        var msg = $("#txtEdit").text();
+        ipcRenderer.send('message', msg); // 'message'というイベントを実行
+
+      });
+
+      //remoteのテスト
+      const electron = require('electron');
+      //レンダラー
+      $("#btnRender").on("click", function () {
+        var cmn = require("./lib/common.js");
+        alert(cmn.Get());
+      });
+      //メイン
+      $("#btnMain").on("click", function () {
+        var cmn = electron.remote.require("./lib/common.js");
+        alert(cmn.Get());
+      });
+
+
+    });
+    </script>
+  </body>
+</html>

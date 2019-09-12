@@ -1,0 +1,16 @@
+{
+  "name": "demo2",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "dependencies": {
+    "electron": "^6.0.8",
+    "jquery": "^3.4.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "start": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
